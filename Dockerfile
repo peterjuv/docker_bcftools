@@ -2,7 +2,7 @@ FROM ubuntu:focal
 MAINTAINER Thomas B. Mooney <tmooney@genome.wustl.edu>
 
 LABEL \
-  version="1.12" \
+  version="1.18" \
   description="bcftools image for use in Workflows"
 
 RUN apt-get update && apt-get install -y \
@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
   zlib1g-dev
 
 ENV BCFTOOLS_INSTALL_DIR=/opt/bcftools
-ENV BCFTOOLS_VERSION=1.12
+ENV BCFTOOLS_VERSION=1.18
 
 WORKDIR /tmp
 RUN wget https://github.com/samtools/bcftools/releases/download/$BCFTOOLS_VERSION/bcftools-$BCFTOOLS_VERSION.tar.bz2 && \
