@@ -1,9 +1,12 @@
-FROM ubuntu:focal
-MAINTAINER Thomas B. Mooney <tmooney@genome.wustl.edu>
+FROM ubuntu:latest
+
+ENV BCFTOOLS_VERSION=1.21
+ENV BCFTOOLS_INSTALL_DIR=/opt/bcftools
 
 LABEL \
-  version="1.18" \
-  description="bcftools image for use in Workflows"
+  description="bcftools image for workflows" \
+  version=$BCFTOOLS_VERSION \
+  maintainer="Peter Juvan <peter.juvan@gmail.com>, adapted from Thomas B. Mooney <tmooney@genome.wustl.edu>"
 
 RUN apt-get update && apt-get install -y \
   bzip2 \
@@ -16,19 +19,19 @@ RUN apt-get update && apt-get install -y \
   wget \
   zlib1g-dev
 
-ENV BCFTOOLS_INSTALL_DIR=/opt/bcftools
-ENV BCFTOOLS_VERSION=1.18
-
 WORKDIR /tmp
-RUN wget https://github.com/samtools/bcftools/releases/download/$BCFTOOLS_VERSION/bcftools-$BCFTOOLS_VERSION.tar.bz2 && \
+RUN \
+  wget https://github.com/samtools/bcftools/releases/download/$BCFTOOLS_VERSION/bcftools-$BCFTOOLS_VERSION.tar.bz2 && \
   tar --bzip2 -xf bcftools-$BCFTOOLS_VERSION.tar.bz2
 
 WORKDIR /tmp/bcftools-$BCFTOOLS_VERSION
-RUN make prefix=$BCFTOOLS_INSTALL_DIR && \
+RUN \
+  make prefix=$BCFTOOLS_INSTALL_DIR && \
   make prefix=$BCFTOOLS_INSTALL_DIR install
 
 WORKDIR /
-RUN ln -s $BCFTOOLS_INSTALL_DIR/bin/bcftools /usr/bin/bcftools && \
+RUN \
+  ln -s $BCFTOOLS_INSTALL_DIR/bin/bcftools /usr/bin/bcftools && \
   rm -rf /tmp/bcftools-$BCFTOOLS_VERSION
 
-ENTRYPOINT ["/usr/bin/bcftools"]
+#ENTRYPOINT ["/usr/bin/bcftools"]
