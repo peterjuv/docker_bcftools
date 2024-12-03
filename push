@@ -1,2 +1,2 @@
 #!/bin/bash
-docker login && docker image push peterjuv/bcftools:latest
+docker login && docker image push peterjuv/bcftools:v.1.20

@@ -1,2 +1,2 @@
 #!/bin/bash
-docker image build -t peterjuv/bcftools:latest .
+docker image build -t peterjuv/bcftools:v.1.20 .
