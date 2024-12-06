@@ -2,6 +2,7 @@ FROM ubuntu:latest
 
 ENV BCFTOOLS_VERSION=1.21
 ENV BCFTOOLS_INSTALL_DIR=/opt/bcftools
+ENV PYTHON_VERSION=3.12
 
 LABEL \
   description="bcftools image for workflows" \
@@ -17,7 +18,9 @@ RUN apt-get update && apt-get install -y \
   make \
   ncurses-dev \
   wget \
-  zlib1g-dev
+  zlib1g-dev \
+  python3 \
+  python3-pip
 
 WORKDIR /tmp
 RUN \
@@ -33,5 +36,10 @@ WORKDIR /
 RUN \
   ln -s $BCFTOOLS_INSTALL_DIR/bin/bcftools /usr/bin/bcftools && \
   rm -rf /tmp/bcftools-$BCFTOOLS_VERSION
+
+RUN \
+  mv /usr/lib/python$PYTHON_VERSION/EXTERNALLY-MANAGED /usr/lib/python$PYTHON_VERSION/EXTERNALLY-MANAGED.old
+RUN \
+  pip3 install biopython pandas
 
 #ENTRYPOINT ["/usr/bin/bcftools"]
